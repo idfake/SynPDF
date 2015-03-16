@@ -508,6 +508,7 @@ procedure zlibFreeMem(AppData, Block: Pointer);  cdecl;
 function ZLIB_VERSION: PAnsiChar;
 {$else}
 const
+  {$EXTERNALSYM ZLIB_VERSION}
   ZLIB_VERSION = '1.2.5';
 {$endif}
 

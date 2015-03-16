@@ -7458,6 +7458,10 @@ type
     fProps: TSynValidateTextProps;
     fUTF8Length: boolean;
   protected
+	/// Getter for fProps[]
+	function GetProps(Index: integer) : cardinal;
+	/// Setter for fProps[]
+	procedure SetProps(Index: integer; Value: cardinal);
     /// use sInvalidTextChar resourcestring to create a translated error message
     procedure SetErrorMsg(fPropsIndex, InvalidTextIndex, MainIndex: integer;
       var result: string);
@@ -7472,54 +7476,54 @@ type
     // - the length is calculated with UTF-16 Unicode codepoints, unless
     // UTF8Length has been set to TRUE so that the UTF-8 byte count is checked
     // - default is 1, i.e. a void text will not pass the validation
-    property MinLength: cardinal read fProps[0] write fProps[0];
+    property MinLength: cardinal Index 0 read GetProps write SetProps;
     /// Maximal length value allowed for the text content
     // - the length is calculated with UTF-16 Unicode codepoints, unless
     // UTF8Length has been set to TRUE so that the UTF-8 byte count is checked
     // - default is maxInt, i.e. no maximum length is set
-    property MaxLength: cardinal read fProps[1] write fProps[1];
+    property MaxLength: cardinal Index 1 read GetProps write SetProps;
     /// Minimal alphabetical character [a-zA-Z] count
     // - default is 0, i.e. no minimum set
-    property MinAlphaCount: cardinal read fProps[2] write fProps[2];
+    property MinAlphaCount: cardinal Index 2 read GetProps write SetProps;
     /// Maximal alphabetical character [a-zA-Z] count
     // - default is maxInt, i.e. no Maximum set
-    property MaxAlphaCount: cardinal read fProps[10] write fProps[10];
+    property MaxAlphaCount: cardinal Index 10 read GetProps write SetProps;
     /// Minimal digit character [0-9] count
     // - default is 0, i.e. no minimum set
-    property MinDigitCount: cardinal read fProps[3] write fProps[3];
+    property MinDigitCount: cardinal Index 3 read GetProps write SetProps;
     /// Maximal digit character [0-9] count
     // - default is maxInt, i.e. no Maximum set
-    property MaxDigitCount: cardinal read fProps[11] write fProps[11];
+    property MaxDigitCount: cardinal Index 11 read GetProps write SetProps;
     /// Minimal punctuation sign [_!;.,/:?%$="#@(){}+-*] count
     // - default is 0, i.e. no minimum set
-    property MinPunctCount: cardinal read fProps[4] write fProps[4];
+    property MinPunctCount: cardinal Index 4 read GetProps write SetProps;
     /// Maximal punctuation sign [_!;.,/:?%$="#@(){}+-*] count
     // - default is maxInt, i.e. no Maximum set
-    property MaxPunctCount: cardinal read fProps[12] write fProps[12];
+    property MaxPunctCount: cardinal Index 12 read GetProps write SetProps;
     /// Minimal alphabetical lower case character [a-z] count
     // - default is 0, i.e. no minimum set
-    property MinLowerCount: cardinal read fProps[5] write fProps[5];
+    property MinLowerCount: cardinal Index 5 read GetProps write SetProps;
     /// Maximal alphabetical lower case character [a-z] count
     // - default is maxInt, i.e. no Maximum set
-    property MaxLowerCount: cardinal read fProps[13] write fProps[13];
+    property MaxLowerCount: cardinal Index 13 read GetProps write SetProps;
     /// Minimal alphabetical upper case character [A-Z] count
     // - default is 0, i.e. no minimum set
-    property MinUpperCount: cardinal read fProps[6] write fProps[6];
+    property MinUpperCount: cardinal Index 6 read GetProps write SetProps;
     /// Maximal alphabetical upper case character [A-Z] count
     // - default is maxInt, i.e. no Maximum set
-    property MaxUpperCount: cardinal read fProps[14] write fProps[14];
+    property MaxUpperCount: cardinal Index 14 read GetProps write SetProps;
     /// Minimal space count inside the value text
     // - default is 0, i.e. any space number allowed
-    property MinSpaceCount: cardinal read fProps[7] write fProps[7];
+    property MinSpaceCount: cardinal Index 7 read GetProps write SetProps;
     /// Maximal space count inside the value text
     // - default is maxInt, i.e. any space number allowed
-    property MaxSpaceCount: cardinal read fProps[15] write fProps[15];
+    property MaxSpaceCount: cardinal Index 15 read GetProps write SetProps;
     /// Maximal space count allowed on the Left side
     // - default is maxInt, i.e. any Left space allowed
-    property MaxLeftTrimCount: cardinal read fProps[8] write fProps[8];
+    property MaxLeftTrimCount: cardinal Index 8 read GetProps write SetProps;
     /// Maximal space count allowed on the Right side
     // - default is maxInt, i.e. any Right space allowed
-    property MaxRightTrimCount: cardinal read fProps[9] write fProps[9];
+    property MaxRightTrimCount: cardinal Index 9 read GetProps write SetProps;
     /// defines if lengths parameters expects UTF-8 or UTF-16 codepoints number
     // - with default FALSE, the length is calculated with UTF-16 Unicode
     // codepoints - MaxLength may not match the UCS4 glyphs number, in case of
@@ -37357,6 +37361,16 @@ begin
     result := Format(result,
       [fProps[fPropsIndex],GetCSVItemString(P,InvalidTextIndex),
        Character01n(fProps[fPropsIndex])]);
+end;
+
+procedure TSynValidateText.SetProps(Index: integer; Value: cardinal);
+begin
+  fProps[Index] := Value;
+end;
+
+function TSynValidateText.GetProps(Index: integer) : cardinal;
+begin
+  Result := fProps[Index];
 end;
 
 function TSynValidateText.Process(aFieldIndex: integer; const Value: RawUTF8;

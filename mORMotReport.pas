@@ -231,6 +231,8 @@ interface
 
 {$I Synopse.inc} // define HASINLINE USETYPEINFO CPU32 CPU64 OWNNORMTOUPPER
 
+{$HPPEMIT '#undef DrawText'} 
+
 uses
   SynCommons, SynLZ,
 {$ifndef USEPDFPRINTER}
@@ -341,7 +343,7 @@ type
   end;
 
   /// contains one page
-  TGDIPageContent = object
+  TGDIPageContent = record
     /// SynLZ-compressed content of the page
     MetaFileCompressed: RawByteString;
     /// text equivalent of the page
